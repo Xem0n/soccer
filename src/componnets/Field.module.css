@@ -1,0 +1,13 @@
+.Field {
+  width: 20px;
+  aspect-ratio: 1/1;
+
+  background: black;
+  border-radius: 50%;
+
+  z-index: 99;
+}
+
+.Empty {
+  background: none;
+}
