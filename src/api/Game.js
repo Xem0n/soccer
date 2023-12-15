@@ -25,7 +25,7 @@ class Game {
     if (
       this.current !== field &&
       !this.isMoveThroughBorder(field) &&
-      this.isFieldApproachable(field) &&
+      this.current.canApproach(field) &&
       !this.isMoveAlreadyDone(field)
     )
       return true;
@@ -37,15 +37,6 @@ class Game {
       (this.current.x === this.width - 1 && field.x === this.width - 1) ||
       (this.current.y === 0 && field.y === 0) ||
       (this.current.y === this.height - 1 && field.y === this.height - 1)
-    );
-  }
-
-  isFieldApproachable(field) {
-    return (
-      this.current.x - 1 <= field.x &&
-      this.current.x + 1 >= field.x &&
-      this.current.y - 1 <= field.y &&
-      this.current.y + 1 >= field.y
     );
   }
 
