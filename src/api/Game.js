@@ -41,11 +41,7 @@ class Game {
   }
 
   isMoveAlreadyDone(field) {
-    return this.moves.some(
-      (move) =>
-        (move.from === this.current && move.to === field) ||
-        (move.from === field && move.to === this.current),
-    );
+    return this.moves.some((move) => move.has(this.current, field));
   }
 
   canReflect() {
@@ -62,9 +58,7 @@ class Game {
 
   isFieldAlreadyUsed(field) {
     return this.moves.some(
-      (move) =>
-        (move.from === field || move.to === field) &&
-        move.type === MoveTypes.Done,
+      (move) => move.has(field) && move.type === MoveTypes.Done,
     );
   }
 
