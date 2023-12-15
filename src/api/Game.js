@@ -14,7 +14,7 @@ class Game {
     this.moves = [];
 
     this.current = this.board[Math.floor(this.board.length / 2)];
-    this.player = "#000";
+    this.player = BLACK;
   }
 
   assignDOMToFields(domElements) {
@@ -22,28 +22,39 @@ class Game {
   }
 
   canMakeMove(field) {
-    if (this.current === field) return false;
-
     if (
+      this.current !== field &&
+      !this.isMoveThroughBorder(field) &&
+      this.isFieldApproachable(field) &&
+      !this.isMoveAlreadyDone(field)
+    )
+      return true;
+  }
+
+  isMoveThroughBorder(field) {
+    return (
       (this.current.x === 0 && field.x === 0) ||
       (this.current.x === this.width - 1 && field.x === this.width - 1) ||
       (this.current.y === 0 && field.y === 0) ||
       (this.current.y === this.height - 1 && field.y === this.height - 1)
-    )
-      return false;
+    );
+  }
 
-    if (
+  isFieldApproachable(field) {
+    return (
       this.current.x - 1 <= field.x &&
       this.current.x + 1 >= field.x &&
       this.current.y - 1 <= field.y &&
-      this.current.y + 1 >= field.y &&
-      !this.moves.some(
-        (move) =>
-          (move.from === this.current && move.to === field) ||
-          (move.from === field && move.to === this.current),
-      )
-    )
-      return true;
+      this.current.y + 1 >= field.y
+    );
+  }
+
+  isMoveAlreadyDone(field) {
+    return this.moves.some(
+      (move) =>
+        (move.from === this.current && move.to === field) ||
+        (move.from === field && move.to === this.current),
+    );
   }
 
   canReflect() {
@@ -54,11 +65,15 @@ class Game {
       field.x === this.width - 1 ||
       field.y === 0 ||
       field.y === this.height - 1 ||
-      this.moves.some(
-        (move) =>
-          (move.from === field || move.to === field) &&
-          move.type === MoveTypes.Done,
-      )
+      this.isFieldAlreadyUsed(field)
+    );
+  }
+
+  isFieldAlreadyUsed(field) {
+    return this.moves.some(
+      (move) =>
+        (move.from === field || move.to === field) &&
+        move.type === MoveTypes.Done,
     );
   }
 
