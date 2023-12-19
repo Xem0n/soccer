@@ -1,4 +1,4 @@
-import Field from "./Field";
+import Board from "./Board";
 import Move from "./Move";
 import MoveTypes from "./MoveTypes";
 
@@ -10,20 +10,25 @@ class Game {
     this.width = width;
     this.height = height;
 
-    this.board = this.generateBoard();
+    this.board = new Board(width, height);
     this.moves = [];
 
-    this.current = this.board[Math.floor(this.board.length / 2)];
+    this.current = this.board.get(Math.floor(this.board.size / 2));
     this.player = BLACK;
+
+    this.win = false;
+    this.onWin = () => {};
   }
 
   assignDOMToFields(domElements) {
-    this.board.forEach((field, i) => (field.element = domElements[i]));
+    this.board.assignDOMToFields(domElements);
   }
 
   canMakeMove(field) {
     if (
+      !this.win &&
       this.current !== field &&
+      field.isValid &&
       !this.isMoveThroughBorder(field) &&
       this.current.canApproach(field) &&
       !this.isMoveAlreadyDone(field)
@@ -33,10 +38,9 @@ class Game {
 
   isMoveThroughBorder(field) {
     return (
-      (this.current.x === 0 && field.x === 0) ||
-      (this.current.x === this.width - 1 && field.x === this.width - 1) ||
-      (this.current.y === 0 && field.y === 0) ||
-      (this.current.y === this.height - 1 && field.y === this.height - 1)
+      this.current.isBorder &&
+      field.isBorder &&
+      (this.current.x === field.x || this.current.y === field.y)
     );
   }
 
@@ -47,13 +51,7 @@ class Game {
   canReflect() {
     const field = this.current;
 
-    return (
-      field.x === 0 ||
-      field.x === this.width - 1 ||
-      field.y === 0 ||
-      field.y === this.height - 1 ||
-      this.isFieldAlreadyUsed(field)
-    );
+    return field.isBorder || this.isFieldAlreadyUsed(field);
   }
 
   isFieldAlreadyUsed(field) {
@@ -86,7 +84,7 @@ class Game {
 
     this.current = lastMove.to;
 
-    if (!this.canReflect()) this.switchPlayer();
+    if (!this.checkWin() && !this.canReflect()) this.switchPlayer();
 
     lastMove.type = MoveTypes.Done;
   }
@@ -101,12 +99,13 @@ class Game {
     this.player = this.player === BLACK ? RED : BLACK;
   }
 
-  generateBoard() {
-    const fields = [...Array(this.width * this.height)].map(
-      (_, i) => new Field(i, i % this.width, Math.floor(i / this.width)),
-    );
+  checkWin() {
+    if (!this.current.isWinnable) return false;
 
-    return fields;
+    this.win = true;
+    this.onWin(this.player);
+
+    return true;
   }
 }
 

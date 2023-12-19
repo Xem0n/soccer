@@ -1,18 +1,16 @@
 class Field {
-  constructor(id, x, y) {
+  constructor(id, x, y, isBorder = false, isValid = true, isWinnable = false) {
     this.id = id;
     this.x = x;
     this.y = y;
+    this.isBorder = isBorder;
+    this.isValid = isValid;
+    this.isWinnable = isWinnable;
     this.element = undefined;
   }
 
   canApproach(field) {
-    return (
-      this.x - 1 <= field.x &&
-      this.x + 1 >= field.x &&
-      this.y - 1 <= field.y &&
-      this.y + 1 >= field.y
-    );
+    return Math.abs(this.x - field.x) <= 1 && Math.abs(this.y - field.y) <= 1;
   }
 }
 

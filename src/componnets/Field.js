@@ -4,7 +4,7 @@ function Field(props) {
   return (
     <div
       ref={props.divRef}
-      className={styles.Field}
+      className={`${styles.Field} ${!props.isValid && styles.Invalid}`}
       onMouseEnter={props.ready}
       onMouseLeave={props.cancel}
       onClick={props.accept}

@@ -13,9 +13,11 @@ const game = new Game(WIDTH, HEIGHT);
 
 function Soccer() {
   const [moves, setMoves] = useState([]);
+  const [win, setWin] = useState(false);
   const fieldRefs = useRef([]);
 
-  const getColor = (move) => move.type === MoveTypes.Preview ? GREY : move.color;
+  const getColor = (move) =>
+    move.type === MoveTypes.Preview ? GREY : move.color;
 
   const updateMoves = () =>
     setMoves(
@@ -47,15 +49,18 @@ function Soccer() {
     updateMoves();
   };
 
-  const fields = game.board.map((field, i) => (
-    <Field
-      key={i}
-      divRef={(el) => (fieldRefs.current[i] = el)}
-      ready={() => ready(field)}
-      cancel={cancel}
-      accept={accept}
-    />
-  ));
+  const fields = game.board
+    .get()
+    .map((field, i) => (
+      <Field
+        key={i}
+        divRef={(el) => (fieldRefs.current[i] = el)}
+        isValid={field.isValid}
+        ready={() => ready(field)}
+        cancel={cancel}
+        accept={accept}
+      />
+    ));
 
   const getX = (element) =>
     element.offsetLeft + parseInt(getComputedStyle(element).width) / 2;
@@ -65,21 +70,27 @@ function Soccer() {
   useEffect(() => {
     game.assignDOMToFields(fieldRefs.current);
     updateMoves();
+    game.onWin = (player) => setWin(player);
 
     return () => {
       game.assignDOMToFields([]);
       setMoves([]);
+      game.onWin = () => {};
     };
   }, []);
 
   return (
-    <div
-      className={styles.Soccer}
-      style={{ gridTemplateColumns: `repeat(${WIDTH}, 1fr)` }}
-    >
-      {fields}
+    <div>
+      <div
+        className={styles.Soccer}
+        style={{ gridTemplateColumns: `repeat(${WIDTH}, 1fr)` }}
+      >
+        {fields}
 
-      <svg>{moves}</svg>
+        <svg>{moves}</svg>
+      </div>
+
+      {win && <p>{win} has won!</p>}
     </div>
   );
 }
