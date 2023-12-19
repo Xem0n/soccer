@@ -16,6 +16,11 @@ function Soccer() {
   const [win, setWin] = useState(false);
   const fieldRefs = useRef([]);
 
+  const getX = (element) =>
+    element.offsetLeft + parseInt(getComputedStyle(element).width) / 2;
+  const getY = (element) =>
+    element.offsetTop + parseInt(getComputedStyle(element).height) / 2;
+
   const getColor = (move) =>
     move.type === MoveTypes.Preview ? GREY : move.color;
 
@@ -61,11 +66,6 @@ function Soccer() {
         accept={accept}
       />
     ));
-
-  const getX = (element) =>
-    element.offsetLeft + parseInt(getComputedStyle(element).width) / 2;
-  const getY = (element) =>
-    element.offsetTop + parseInt(getComputedStyle(element).height) / 2;
 
   useEffect(() => {
     game.assignDOMToFields(fieldRefs.current);
