@@ -22,7 +22,7 @@ function Soccer() {
     element.offsetTop + parseInt(getComputedStyle(element).height) / 2;
 
   const getColor = (move) =>
-    move.type === MoveTypes.Preview ? GREY : move.color;
+    move.type === MoveTypes.Preview ? GREY : move.player.color;
 
   const updateMoves = () =>
     setMoves(
@@ -90,7 +90,7 @@ function Soccer() {
         <svg>{moves}</svg>
       </div>
 
-      {win && <p>{win} has won!</p>}
+      {win && <p>{win.name} has won!</p>}
     </div>
   );
 }

@@ -1,9 +1,12 @@
 import Board from "./Board";
 import Move from "./Move";
 import MoveTypes from "./MoveTypes";
+import Player from "./Player";
 
-const BLACK = "#000";
-const RED = "#f13";
+const PLAYERS = {
+  black: new Player("Player #1", "#000"),
+  red: new Player("Player #2", "#f13"),
+};
 
 class Game {
   constructor(width, height) {
@@ -14,7 +17,7 @@ class Game {
     this.moves = [];
 
     this.current = this.board.get(Math.floor(this.board.size / 2));
-    this.player = BLACK;
+    this.player = PLAYERS.black;
 
     this.win = false;
     this.onWin = () => {};
@@ -96,7 +99,7 @@ class Game {
   }
 
   switchPlayer() {
-    this.player = this.player === BLACK ? RED : BLACK;
+    this.player = this.player === PLAYERS.black ? PLAYERS.red : PLAYERS.black;
   }
 
   checkWin() {

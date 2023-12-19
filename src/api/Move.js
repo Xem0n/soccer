@@ -1,8 +1,8 @@
 class Move {
-  constructor(from, to, color, type) {
+  constructor(from, to, player, type) {
     this.from = from;
     this.to = to;
-    this.color = color;
+    this.player = player;
     this.type = type;
   }
 
