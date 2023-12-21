@@ -1,0 +1,57 @@
+.Wizard {
+  max-width: 90%;
+  width: 500px;
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  margin-top: 50px;
+  padding: 20px;
+
+  border: 2px solid black;
+}
+
+.Wizard > h1 {
+  align-self: center;
+
+  margin: 0 0 20px 0;
+
+  font-size: 1.5rem;
+}
+
+.Input-Group {
+  display: flex;
+  flex-flow: row wrap;
+
+  align-items: center;
+}
+
+.Input-Group > * {
+  flex: 1;
+}
+
+.Input-Group > input {
+  outline: none;
+  border: 1px solid black;
+  background: none;
+
+  margin: 5px 0;
+  padding: 5px 8px;
+
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.Submit {
+  outline: none;
+  border: 1px solid black;
+  background: none;
+
+  margin-top: 10px;
+  padding: 5px 8px;
+
+  font-family: inherit;
+  font-size: 1rem;
+
+  cursor: pointer;
+}
