@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import Game from "../api/Game";
-import MoveTypes from "../api/MoveTypes";
+import { Game, MoveTypes } from "shared";
 import Field from "./Field";
 import styles from "./Soccer.module.css";
 
-const WIDTH = 9;
-const HEIGHT = 13;
+const WIDTH = 13;
+const HEIGHT = 17;
 
 const GREY = "#bbb";
 

@@ -1,4 +1,4 @@
-import Field from "./Field";
+import Field from "./Field.js";
 
 const GOAL_WIDTH = 1;
 
@@ -14,6 +14,10 @@ class Board {
 
   get(index) {
     return index === undefined ? this.fields : this.fields[index];
+  }
+
+  find(x, y) {
+    return this.fields.find((field) => field.x === x && field.y === y);
   }
 
   generate() {

@@ -1,7 +1,7 @@
-import Board from "./Board";
-import Move from "./Move";
-import MoveTypes from "./MoveTypes";
-import Player from "./Player";
+import Board from "./Board.js";
+import Move from "./Move.js";
+import MoveTypes from "./MoveTypes.js";
+import Player from "./Player.js";
 
 const PLAYERS = {
   black: new Player("Player #1", "#000"),
@@ -64,7 +64,7 @@ class Game {
   }
 
   readyMove(field) {
-    if (!this.canMakeMove(field)) return;
+    if (!this.canMakeMove(field)) return false;
 
     const lastMove = this.moves[this.moves.length - 1];
 
@@ -73,6 +73,8 @@ class Game {
     this.moves.push(
       new Move(this.current, field, this.player, MoveTypes.Preview),
     );
+
+    return true;
   }
 
   acceptMove() {
